@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ericsson.nms</groupId>
+        <artifactId>integration</artifactId>
+        <version>15.2.0.40</version>
+    </parent>
+    <groupId>com.ericsson.oss.presentation.server.cmsubscribedevents</groupId>
+    <artifactId>cm-subscribed-events-nbi</artifactId>
+    <version>1.15.5-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+ 
+    <url>http://www.ericsson.com</url>
+    <organization>
+        <name>Ericsson</name>
+    </organization>
+
+    <prerequisites>
+        <maven>3.0.3</maven>
+    </prerequisites>
+
+    <name>[${project.artifactId}] JEE8 Project</name>
+
+    <properties>
+        <!-- Do not use JBoss community version, use EAP version. The property values of the "jboss_managed_local" profile
+             in testsuite/jee need to be updated, when this JBoss version is changed. -->
+        <jboss.eap.home>jboss-eap</jboss.eap.home>
+        <!-- Required for Arquillian Testsuite -->
+        <version.maven.failsafe>2.17</version.maven.failsafe>
+        <version.maven.dependency>2.8</version.maven.dependency>
+        <version.jboss.as>7.2.8.1</version.jboss.as>
+        <version.jboss.javaee>1.0.4.Final-redhat-00001</version.jboss.javaee>
+        <version.jee>8</version.jee>
+        <version.jboss.as.arquillian>7.2.0.Final</version.jboss.as.arquillian>
+
+        <!-- Java -->
+        <version.java>1.8</version.java>
+
+        <!-- When you want to switch to new Service Framework version only change value below. -->
+        <version.service.framework>4.43.1</version.service.framework>
+
+        <!-- Version of Model Service BOM. Annotation Processor and Model-Deployment-Tool need to be explicitly defined as
+            they are required in build phase. Be sure to always have alignment between each version below. If the BOM version changes,
+            the Annotation Processor / Model-Deployment-Tool versions may have to change as well. See Modeling BOM in confluence page
+            for the correct versions to use. -->
+        <version.modeling.bom>21.15.30</version.modeling.bom>
+        <version.model.deployment.tool>9.58.1</version.model.deployment.tool>
+        <version.mediation.sdk>3.1.4</version.mediation.sdk>
+        <version.dps>2.125.1</version.dps>
+
+        <!-- Unit Testing -->
+        <version.junit>4.12</version.junit>
+        <version.mockito>1.9.5</version.mockito>
+
+        <!-- Groovy,CDI and Spock -->
+        <version.groovy>2.4.0</version.groovy>
+        <version.spock>1.0-groovy-2.4</version.spock>
+        <version.cdi-test-support>1.1.75</version.cdi-test-support>
+        <version.resteasy>3.6.1.Final</version.resteasy>
+        <version.spock-reports>1.2.13</version.spock-reports>
+        <version.cglib-nodep>3.2.5</version.cglib-nodep>
+
+        <version.jacoco-maven>0.8.4</version.jacoco-maven>
+
+        <!-- Required for Arquillian Testsuite -->
+        <version.wildfly-arquillian-container>3.0.1.Final</version.wildfly-arquillian-container>
+        <version.arquillian.bom>1.2.0.Final</version.arquillian.bom>
+
+        <!-- Client and JSON -->
+        <version.httpclient>4.5.1</version.httpclient>
+        <version.httpcore>4.4.4</version.httpcore>
+
+        <version.jackson>2.14.1</version.jackson>
+
+        <version.halbuilder-xml>4.1.4</version.halbuilder-xml>
+        <version.networknt.schema.validator>1.0.59</version.networknt.schema.validator>
+        <version.wiremock>2.33.2</version.wiremock>
+
+        <version.weld>1.1.13.Final</version.weld>
+
+        <project.ear.defaultLibBundleDir>lib</project.ear.defaultLibBundleDir>
+
+        <!-- JBoss modules your service will automatically add to classpath -->
+        <project.ear.Dependencies>org.slf4j</project.ear.Dependencies>
+
+        <!-- CMEvents dependency -->
+        <version.cmeventscommonjar>1.33.1</version.cmeventscommonjar>
+
+        <version.cmsubscribedeventssubscriptionmgr>1.6.3</version.cmsubscribedeventssubscriptionmgr>
+        <version.cmsubscribedeventssubscriptionsvc>1.15.2</version.cmsubscribedeventssubscriptionsvc>
+        <version.cmsubscribedeventsmodel>1.0.1</version.cmsubscribedeventsmodel>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ServiceFrameworkJBossBOM only imports the Service Framework API modules.
+                No Service Framework implementation module is imported with this BOM. -->
+            <dependency>
+                <groupId>com.ericsson.oss.itpf.sdk</groupId>
+                <artifactId>ServiceFrameworkJBossBOM</artifactId>
+                <version>${version.service.framework}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.itpf.sdk</groupId>
+                <artifactId>ServiceFrameworkBOM</artifactId>
+                <version>${version.service.framework}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.itpf.sdk</groupId>
+                <artifactId>service-framework-rar</artifactId>
+                <version>${version.service.framework}</version>
+                <type>rar</type>
+            </dependency>
+            <!-- Model Service BOM. It is required by Service Framework, and for anyone who is using Model Service. Do not
+                remove it. -->
+            <dependency>
+                <groupId>com.ericsson.oss.itpf.modeling</groupId>
+                <artifactId>Modeling-BOM</artifactId>
+                <version>${version.modeling.bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.itpf.datalayer.dps</groupId>
+                <artifactId>data-persistence-service-bom</artifactId>
+                <version>${version.dps}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ericsson.oss.services.cmsubscribedevents</groupId>
+                <artifactId>cmsubscribedeventssubscriptionsvc-api</artifactId>
+                <version>${version.cmsubscribedeventssubscriptionsvc}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.services.cmsubscribedevents</groupId>
+                <artifactId>cmsubscribedeventssubscriptionmgr-api</artifactId>
+                <version>${version.cmsubscribedeventssubscriptionmgr}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.services.cmsubscribedevents</groupId>
+                <artifactId>cmsubscribedeventsmodel-models</artifactId>
+                <version>${version.cmsubscribedeventsmodel}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.networknt</groupId>
+                <artifactId>json-schema-validator</artifactId>
+                <version>${version.networknt.schema.validator}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.theoryinpractise</groupId>
+                <artifactId>halbuilder-xml</artifactId>
+                <version>${version.halbuilder-xml}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+
+            <!-- Dependency versions for tests Spock/groovy -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${version.spock}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.athaydes</groupId>
+                <artifactId>spock-reports</artifactId>
+                <version>${version.spock-reports}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${version.groovy}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.cds</groupId>
+                <artifactId>cdi-test-support</artifactId>
+                <version>${version.cdi-test-support}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${version.mockito}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxrs</artifactId>
+                <version>${version.resteasy}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib-nodep</artifactId>
+                <version>${version.cglib-nodep}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wildfly.arquillian</groupId>
+                <artifactId>wildfly-arquillian-container-managed</artifactId>
+                <version>${version.wildfly-arquillian-container}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.wildfly.arquillian</groupId>
+                <artifactId>wildfly-arquillian-container-remote</artifactId>
+                <version>${version.wildfly-arquillian-container}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- The dependency is needed when "JSR-330: Dependency Injection" is used (e.g. @Inject, @Qualifier etc.) -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Dependency for Bean validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Dependency for SLF4J logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <scm>
+        <connection>
+            scm:git:ssh://gerrit-gamma.gic.ericsson.se:29418/OSS/ENM-Parent/SQ-Gate/com.ericsson.oss.presentation.server.cmsubscribedevents/cm-subscribed-events-nbi
+        </connection>
+        <developerConnection>
+            scm:git:ssh://gerrit-gamma.gic.ericsson.se:29418/OSS/ENM-Parent/SQ-Gate/com.ericsson.oss.presentation.server.cmsubscribedevents/cm-subscribed-events-nbi
+        </developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <modules>
+        <module>ERICcmsubscribedeventsnbi_CXP9042641</module>
+        <module>cm-subscribed-events-nbi-api</module>
+        <module>cm-subscribed-events-nbi-ear</module>
+        <module>cm-subscribed-events-nbi-jar</module>
+        <module>cm-subscribed-events-nbi-war</module>
+        <module>testsuite</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.6.1</version>
+                    <configuration>
+                        <source>${version.java}</source>
+                        <target>${version.java}</target>
+                        <showDeprecation>true</showDeprecation>
+                        <showWarnings>true</showWarnings>
+                        <compilerId>groovy-eclipse-compiler</compilerId>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-eclipse-compiler</artifactId>
+                            <version>2.9.2-01</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-eclipse-batch</artifactId>
+                            <version>2.4.3-01</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven 
+                    build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.4,)</versionRange>
+                                        <goals>
+                                            <goal>analyze-dep-mgt</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-ear-plugin</artifactId>
+                                        <versionRange>[2.7,)</versionRange>
+                                        <goals>
+                                            <goal>generate-application-xml</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.ericsson.maven.plugins</groupId>
+                                        <artifactId>rstate-maven-plugin</artifactId>
+                                        <versionRange>[1.0,)</versionRange>
+                                        <goals>
+                                            <goal>rstate</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-enforcer-plugin</artifactId>
+                                        <versionRange>[1.1,)</versionRange>
+                                        <goals>
+                                            <goal>enforce</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>build-helper-maven-plugin</artifactId>
+                                        <versionRange>[1.7,)</versionRange>
+                                        <goals>
+                                            <goal>regex-property</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <configuration>
+                    <filename>${project.parent.artifactId}.${project.packaging}</filename>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${version.jacoco-maven}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-code-coverage-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

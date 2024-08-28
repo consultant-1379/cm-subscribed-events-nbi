@@ -1,0 +1,19 @@
+#%RAML 1.0 Library
+usage: |
+  Use to define some basic server error related constructs.
+
+types:
+  #%RAML 1.0 DataType
+  errorMessage:
+    properties:
+      errorMessage:
+        description: Error message.
+        type: string
+  #%RAML 1.0 DataType
+  RestErrorWrapper:
+    properties:
+      errors:
+        type: errorMessage[]
+        required: true
+        items: errorMessage
+        description: List of error messages.

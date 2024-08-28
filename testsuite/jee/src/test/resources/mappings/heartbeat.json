@@ -1,0 +1,30 @@
+{
+  "request" : {
+    "url" : "/eventListener/v1/sub1",
+    "method" : "POST",
+    "bodyPatterns" : [
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.version == '4.1')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.vesEventListenerVersion == '7.2.1')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.domain == 'heartbeat')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.stndDefinedNamespace == '3GPP-Heartbeat')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.eventName == 'Heartbeat_ENM-Ericsson_VES')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.eventId =~ /^Heartbeat_\\S*/)]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.sequence == '0')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.priority == 'High')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.reportingEntityName =~ /\\S*/)]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.sourceName =~ /\\S*/)]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.nfVendorName == 'Ericsson')]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.startEpochMicrosec =~ /\\d*/)]"},
+      {"matchesJsonPath" : "$.event.commonEventHeader[?(@.startEpochMicrosec =~ /\\d*/)]"},
+      {"matchesJsonPath" : "$.event.stndDefinedFields.data[?(@.href =~ /\\S*/)]"},
+      {"matchesJsonPath" : "$.event.stndDefinedFields.data[?(@.notificationId =~ /\\d*/)]"},
+      {"matchesJsonPath" : "$.event.stndDefinedFields.data[?(@.notificationType == 'Heartbeat')]"},
+      {"matchesJsonPath" : "$.event.stndDefinedFields.data[?(@.eventTime =~ /[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-2][0-9]\\:[0-5][0-9]\\:[0-5][0-9].[0-9]{3}Z/)]"},
+      {"matchesJsonPath" : "$.event.stndDefinedFields.data[?(@.systemDN =~ /\\S*/)]"},
+      {"matchesJsonPath" : "$.event.stndDefinedFields.data[?(@.heartbeatNtfPeriod =~ /\\d*/)]"}
+    ]
+  },
+  "response" : {
+    "status" : 204
+  }
+}

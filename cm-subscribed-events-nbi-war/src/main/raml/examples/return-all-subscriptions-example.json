@@ -1,0 +1,53 @@
+[
+  {
+    "ntfSubscriptionControl":{
+      "id":"1",
+      "notificationRecipientAddress":"https://site/com/eventListener/v1",
+      "notificationTypes":[
+        "notifyMOIChanges",
+        "notifyMOICreation",
+        "notifyMOIDeletion",
+        "notifyMOIAttributeValueChanges"
+      ],
+      "notificationFilter": "//NetworkElement/CmFunction |  //SubNetwork/ManagedElement/ENodeBFunction/EUtraNetwork",
+      "scope":{
+        "scopeType": "BASE_ALL",
+        "scopeLevel": 0
+      },
+      "objectInstance":"/",
+      "objectClass":"/"
+    }
+  },
+  {
+    "ntfSubscriptionControl":{
+      "id":"2",
+      "notificationRecipientAddress":"https://site/com/eventListener/v1",
+      "notificationTypes":[
+        "notifyMOIDeletion",
+        "notifyMOIAttributeValueChanges"
+      ],
+      "scope":{
+        "scopeType": "BASE_ALL",
+        "scopeLevel": 0
+      },
+      "objectInstance":"/",
+      "objectClass":"/"
+    }
+  },
+  {
+    "ntfSubscriptionControl":{
+      "id":"3",
+      "notificationRecipientAddress":"https://site/com/eventListener/v1",
+      "notificationTypes":[
+        "notifyMOIAttributeValueChanges"
+      ],
+      "notificationFilter": "//SubNetwork/SubNetwork/SubNetwork/MeContext/ManagedElement/RncFunction/UtranCell/GsmRelation | //SubNetwork/SubNetwork/SubNetwork/ManagedElement/ENodeBFunction/EUtranCellFDD/UtranFreqRelation/UtranCellRelation/",
+      "scope":{
+        "scopeType": "BASE_ALL",
+        "scopeLevel": 0
+      },
+      "objectInstance":"/",
+      "objectClass":"/"
+    }
+  }
+]

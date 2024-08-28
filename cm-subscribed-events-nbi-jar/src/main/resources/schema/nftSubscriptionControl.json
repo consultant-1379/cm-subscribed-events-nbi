@@ -1,0 +1,109 @@
+{
+  "$id": "#/ntfSubscriptionControl.json",
+  "type": "object",
+  "properties": {
+    "ntfSubscriptionControl": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notificationRecipientAddress": {
+          "type": "string",
+          "minLength":1
+        },
+        "scope": {
+          "properties": {
+            "scopeType": {
+              "enum": [
+                "BASE_ALL"
+              ]
+            },
+            "scopeLevel": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },"required": [
+            "scopeType"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "scopeType": {
+                    "enum": [
+                      "BASE_ALL"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "scopeLevel": {
+                    "type": "integer",
+                    "maximum": 0
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "scopeLevel": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "scopeLevel"
+                ]
+              },
+              "then": {
+                "required": [
+                  "scopeType"
+                ]
+              }
+            }
+          ],"additionalProperties": false
+        },
+        "notificationTypes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "notifyMOIChanges",
+              "notifyMOICreation",
+              "notifyMOIDeletion",
+              "notifyMOIAttributeValueChanges"
+            ]
+          }
+        },
+        "notificationFilter": {
+          "type": "string",
+          "pattern": "^\\s*\\/\\/([A-Za-z0-9]_?\\/?(\\s*\\|\\s*\\/\\/[A-Za-z0-9]_?)?)+\\s*$"
+        },
+        "objectInstance": {
+          "type": "string",
+          "const": "/"
+        },
+        "objectClass": {
+          "type": "string",
+          "const": "/"
+        }
+      },
+      "required": [
+        "id",
+        "notificationRecipientAddress",
+        "objectInstance",
+        "objectClass"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "ntfSubscriptionControl"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,118 @@
+#%RAML 1.0 Library
+usage: |
+  Use to define the models for Subscription, Scope and the supported rest contexts.
+
+types:
+  #%RAML 1.0 DataType
+  createSubscription:
+    type: object
+    properties:
+      ntfSubscriptionControl:
+        type: object
+        description: NtfSubscriptionControl represents a notification subscription of a notification recipient.
+        properties:
+          id:
+            type: string
+            description: Not relevant for ENM and dummy String can be used. A new ID will be generated and returned in the Subscription Response.
+            required: true
+          notificationRecipientAddress:
+            type: string
+            description: The URL along with the external systems server root which form the recipient address supplied by the external system. Must adhere to {externalsystem}/eventListener/v{apiVersion}.
+            required: true
+          notificationTypes:
+            type: string[]
+            description: Types of notifications that are candidates for being forwarded to the notification recipient. <br>
+              Supported values - notifyMOIChanges, notifyMOICreation, notifyMOIDeletion, notifyMOIAttributeValueChanges. <br>
+              If this attribute is absent, notifications will be forwarded as notifyMOIChanges events by default.
+            required: false
+          notificationFilter:
+            type: string
+            pattern: ^\s*\/\/([A-Za-z0-9]_?\/?(\s*\|\s*\/\/[A-Za-z0-9]_?)?)+\s*$
+            description: "This notificationFilter is an 'allow-list' based filter and only the notifications belonging to MOs and Attributes mentioned in the filter will be forwarded to the notification recipient, otherwise, all other notifications are discarded. <br>
+              This regex pattern defines the following: <br>
+              <ol>
+              <li>The value must start with double forward slashes.</li>
+              <li>Then followed by alphanumeric and underscore value(s).</li>
+              <li>Optionally followed by a single forward slash and more alphanumeric values (this step can be repeated multiple times as needed).</li>
+              <li>Optionally, if more paths are required, a pipe symbol can be used as a separator and steps 1 - 3 can be repeated (this step can be repeated multiple times as needed). </li>
+              </ol> <br>
+              E.g. Given the following filter '<b>//NetworkElement/CmFunction | //SubNetwork/ManagedElement/ENodeBFunction/EUtraNetwork</b>', this will filter MOs for '<b>NetworkElement={NetworkElement_Value},CmFunction={CmFunction_Value}</b>' and '<b>SubNetwork={SubNetwork_Value},ManagedElement={ManagedElement_Value},ENodeBFunction={ENodeBFunction_Value},EUtraNetwork={EUtraNetwork_Value}</b>'."
+            required: false
+          scope:
+            type: object
+            description: Scope defines a scope for selecting managed object instances below and including a base Managed Object Instance. The Scope is specified with the scopeType and a scopeLevel attributes.
+            required: false
+            properties:
+              scopeType:
+                type: string
+                description: Specifies how events will be included based on the object's place in the tree structure. Supported values - BASE_ALL
+                required: true
+              scopeLevel:
+                type: integer
+                description: Specifies how many levels below the base level object are to be included. Supported values - 0.
+                required: false
+          objectClass:
+            type: string
+            description: Managed Object (MO) Class name. This value is used to restrict the Scope. Supported values - /.
+            required: true
+          objectInstance:
+            type: string
+            description: Fully Distinguished Name (FDN) of the MO. This value is used to restrict the Scope. Supported values - /.
+            required: true
+  #%RAML 1.0 DataType
+  subscriptionResponse:
+    type: object
+    properties:
+      ntfSubscriptionControl:
+        type: object
+        description: NtfSubscriptionControl represents a notification subscription of a notification recipient.
+        properties:
+          id:
+            type: string
+            description: The ID of the subscription.
+            required: true
+          notificationRecipientAddress:
+            type: string
+            description: The URL along with the external systems server root which form the recipient address supplied by the external system. Must adhere to {externalsystem}/eventListener/v{apiVersion}.
+            required: true
+          notificationTypes:
+            type: string[]
+            description: Types of notifications that are candidates for being forwarded to the notification recipient. <br>
+              Supported values - notifyMOIChanges, notifyMOICreation, notifyMOIDeletion, notifyMOIAttributeValueChanges. <br>
+              If this attribute is absent, notifications will be forwarded as notifyMOIChanges events by default.
+            required: false
+          notificationFilter:
+            type: string
+            pattern: ^(\s*\/\/(([A-Za-z0-9]_?\/?)+(\s*\|\s*(\/\/[A-Za-z0-9]_?))?)+\s*)$
+            description: "This notificationFilter is an 'allow-list' based filter and only the notifications belonging to MOs and Attributes mentioned in the filter will be forwarded to the notification recipient, otherwise, all other notifications are discarded. <br>
+              This regex pattern defines the following: <br>
+              <ol>
+              <li>The value must start with double forward slashes.</li>
+              <li>Then followed by alphanumeric and underscore value(s).</li>
+              <li>Optionally followed by a single forward slash and more alphanumeric values (this step can be repeated multiple times as needed).</li>
+              <li>Optionally, if more paths are required, a pipe symbol can be used as a separator and steps 1 - 3 can be repeated (this step can be repeated multiple times as needed). </li>
+              </ol> <br>
+              E.g. Given the following filter '<b>//NetworkElement/CmFunction | //SubNetwork/ManagedElement/ENodeBFunction/EUtraNetwork</b>', this will filter MOs for '<b>NetworkElement={NetworkElement_Value},CmFunction={CmFunction_Value}</b>' and '<b>SubNetwork={SubNetwork_Value},ManagedElement={ManagedElement_Value},ENodeBFunction={ENodeBFunction_Value},EUtraNetwork={EUtraNetwork_Value}</b>'."
+            required: false
+          scope:
+            type: object
+            description: Scope defines a scope for selecting managed object instances below and including a base Managed Object Instance. The Scope is specified with the scopeType and a scopeLevel attributes.
+            required: false
+            properties:
+              scopeType:
+                type: string
+                description: Specifies how events will be included based on the object's place in the tree structure. Supported values - BASE_ALL
+                required: true
+              scopeLevel:
+                type: integer
+                description: Specifies how many levels below the base level object are to be included. Supported values - 0.
+                required: false
+          objectClass:
+            type: string
+            description: Managed Object (MO) Class name. This value is used to restrict the Scope. Supported values - /.
+            required: true
+          objectInstance:
+            type: string
+            description: Fully Distinguished Name (FDN) of the MO. This value is used to restrict the Scope. Supported values - /.
+            required: true
+

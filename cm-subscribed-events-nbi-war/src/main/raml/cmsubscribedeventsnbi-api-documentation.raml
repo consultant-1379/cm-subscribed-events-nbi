@@ -1,0 +1,145 @@
+#%RAML 1.0
+title: Configuration Management Subscribed Events Northbound Interface
+version: v1
+baseUri: "{scheme}://{URL}/cm/subscribed-events/{version}"
+baseUriParameters:
+  scheme:
+    description: HTTP, HTTPS
+  URL:
+    description: servername.com
+  version:
+    description: v1
+protocols: [ HTTPS ]
+mediaType: application/hal+json
+uses:
+  models: libraries/models.raml
+  errors: errors/error-schema.raml
+/subscriptions:
+  get:
+    description: Returns all CM subscribed events subscriptions.
+    responses:
+      200:
+        description: OK.
+        body:
+          application/hal+json:
+            type: models.subscriptionResponse[]
+            example: !include examples/return-all-subscriptions-example.json
+      204:
+        description: No Content.
+      401:
+        description: Unauthorised.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/401-unauthorized-response-example.json
+      403:
+        description: Forbidden.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/403-forbidden-response-example.json
+      500:
+        description: Internal Server Error.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/500-internal-server-error-response-example.json
+  post:
+    description: Creates a subscription and returns the subscription object with its unique ID.
+    body:
+      application/hal+json:
+        example: !include examples/create-subscription-request-body-example.json
+        properties:
+          application/hal+json:
+            type: models.createSubscription
+    responses:
+      201:
+        description: Created.
+        body:
+          application/hal+json:
+            type: models.subscriptionResponse
+            example: !include examples/ntfSubscriptionControl-example.json
+      400:
+        description: Bad Request.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/400-bad-request-response-example.json
+      401:
+        description: Unauthorised.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/401-unauthorized-response-example.json
+      403:
+        description: Forbidden.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/403-forbidden-response-example.json
+      500:
+        description: Internal Server Error.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/500-internal-server-error-response-example.json
+/subscriptions/{id}:
+  uriParameters:
+    id:
+      description: The ID of the subscription.
+  get:
+    description: Retrieves a subscription's details identified by its ID.
+    responses:
+      200:
+        description: OK.
+        body:
+          application/hal+json:
+            type: models.subscriptionResponse
+            example: !include examples/ntfSubscriptionControl-example.json
+      401:
+        description: Unauthorised.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/401-unauthorized-response-example.json
+      403:
+        description: Forbidden.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/403-forbidden-response-example.json
+      404:
+        description: Not Found.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/404-not-found-response-example.json
+  delete:
+    description: Deletes a subscription identified by its ID.
+    responses:
+      204:
+        description: No Content.
+      401:
+        description: Unauthorised.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/401-unauthorized-response-example.json
+      403:
+        description: Forbidden.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/403-forbidden-response-example.json
+      404:
+        description: Not Found.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/404-not-found-response-example.json
+      500:
+        description: Internal Server Error.
+        body:
+          application/hal+json:
+            type: errors.RestErrorWrapper
+            example: !include examples/500-internal-server-error-response-example.json

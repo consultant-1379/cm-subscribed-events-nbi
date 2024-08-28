@@ -1,0 +1,19 @@
+{
+  "ntfSubscriptionControl":{
+    "id":"Request_id",
+    "notificationRecipientAddress":"https://site/com/eventListener/v1",
+    "notificationTypes":[
+      "notifyMOIChanges",
+      "notifyMOICreation",
+      "notifyMOIDeletion",
+      "notifyMOIAttributeValueChanges"
+    ],
+    "notificationFilter": "//SubNetwork/SubNetwork/ | //SubNetwork/SubNetwork/SubNetwork/ManagedElement",
+    "scope":{
+      "scopeType": "BASE_ALL",
+      "scopeLevel": 0
+    },
+    "objectInstance":"/",
+    "objectClass":"/"
+  }
+}

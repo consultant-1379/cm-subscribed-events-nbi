@@ -1,0 +1,7 @@
+{
+  "errors":[
+    {
+      "errorMessage":"ntfSubscriptionControl.scope.scopeType: does not have a value in the enumeration [BASE_ALL]"
+    }
+  ]
+}
